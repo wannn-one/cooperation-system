@@ -1,7 +1,7 @@
 CXX=g++
-CXXFLAGS+= -std=c++17 -O3 -Wall -Wextra -I.
+CXXFLAGS+=-I.
 
-OUTPUT=Koperasi
+OUTPUT=Koperasi.exe
 
 SOURCEDIR=src
 OBJECTSDIR=obj
@@ -20,5 +20,11 @@ $(OBJECTS): | $(OBJECTSDIR)
 $(OBJECTSDIR):
 	mkdir $@
 
+# WINDOWS UNCOMMENT INI
+# clean:
+# 	del /Q $(OBJECTSDIR)\*.o $(OUTPUT).exe
+
+
+# INI LINUX AJA
 clean:
 	rm -f $(OBJECTSDIR)/*.o $(OUTPUT)

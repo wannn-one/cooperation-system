@@ -2,11 +2,10 @@
 #define ANGGOTA_HPP
 #include <string>
 #include <vector>
-#include "include/transaksi.hpp"
 
 class Anggota{
     private:
-        int id;
+        // int id;
         std::string nama;
         std::string nik;
         std::string password;
@@ -14,11 +13,12 @@ class Anggota{
         int bulan;
         int tahun;
         int saldo;
+        int saldo_dipinjam;
         
     public:
-        Anggota(int id, std::string nama, std::string nik, std::string password, int tanggal, int bulan, int tahun, int saldo);
+        Anggota(std::string nama, std::string nik, std::string password, int tanggal, int bulan, int tahun, int saldo, int saldo_dipinjam);
         
-        int getId();
+        // int getId();
 
         std::string getNama();
         void setNama(std::string nama);
@@ -38,7 +38,8 @@ class Anggota{
         int getSaldo();
         void setSaldo(int saldo);
 
-        std::vector<Koperasi> transaksi_dilakukan;
+        int getSaldoDipinjam();
+        void setSaldoDipinjam(int saldo_dipinjam);
 };
 
 #endif

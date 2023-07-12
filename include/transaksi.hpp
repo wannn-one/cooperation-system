@@ -1,39 +1,32 @@
-#ifndef KOPERASI_HPP
-#define KOPERASI_HPP
+#ifndef TRANSAKSI_HPP
+#define TRANSAKSI_HPP
 #include <string>
+using namespace std;
 
-class Koperasi{
+class Transaksi{
     private:
-        std::string nik_to_compare;
-        std::string pass_to_compare;
-        int simpanan_pokok;
-        int simpanan_wajib;
-        int simpanan_sukarela;
-        int pinjaman;
-        int angsuran;
+        string jenis_transaksi;
+        string nik;
+        int tanggal;
+        int bulan;
+        int tahun;
+        int nominal;
     public:
-        Koperasi();
+        Transaksi(string jenis_transaksi, string nik, int tanggal, int bulan, int tahun, int nominal);
 
-        std::string getNikToCompare();
-        void setNik(std::string nik_to_compare);
+        string getJenisTransaksi();
+        string getNik();
+        int getTanggal();
+        int getBulan();
+        int getTahun();
+        int getNominal();
 
-        std::string getPasswordToCompare();
-        void setPassword(std::string pass_to_compare);
-
-        int getSimpananPokok();
-        void setSimpananPokok(int simpanan_pokok);
-
-        int getSimpananWajib();
-        void setSimpananWajib(int simpanan_wajib);
-
-        int getSimpananSukarela();
-        void setSimpananSukarela(int simpanan_sukarela);
-
-        int getPinjaman();
-        void setPinjaman(int pinjaman);
-
-        int getAngsuran();
-        void setAngsuran(int angsuran);
+        void setJenisTransaksi(string jenis_transaksi);
+        void setNik(string nik);
+        void setTanggal(int tanggal);
+        void setBulan(int bulan);
+        void setTahun(int tahun);
+        void setNominal(int nominal);
 };
 
 #endif

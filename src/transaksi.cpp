@@ -1,60 +1,55 @@
 #include "include/transaksi.hpp"
+#include <string>
+Transaksi::Transaksi(string jenis_transaksi, string nik, int tanggal, int bulan, int tahun, int nominal) : jenis_transaksi(jenis_transaksi), nik(nik), tanggal(tanggal), bulan(bulan), tahun(tahun), nominal(nominal){
 
-Koperasi::Koperasi(){
-    this->nik_to_compare = "";
-    this->pass_to_compare = "";
-    this->simpanan_pokok = 0;
-    this->simpanan_wajib = 0;
-    this->simpanan_sukarela = 0;
-    this->pinjaman = 0;
-    this->angsuran = 0;
-}
-
-std::string Koperasi::getNikToCompare(){
-    return this->nik_to_compare;
 }
 
 
-std::string Koperasi::getPasswordToCompare(){
-    return this->pass_to_compare;
+void Transaksi::setJenisTransaksi(string jenis_transaksi){
+    this->jenis_transaksi = jenis_transaksi;
 }
 
-int Koperasi::getSimpananPokok(){
-    return this->simpanan_pokok;
+string Transaksi::getJenisTransaksi(){
+    return this->jenis_transaksi;
 }
 
-void Koperasi::setSimpananPokok(int simpanan_pokok){
-    this->simpanan_pokok = simpanan_pokok;
+void Transaksi::setNik(string nik){
+    this->nik = nik;
 }
 
-int Koperasi::getSimpananWajib(){
-    return this->simpanan_wajib;
+string Transaksi::getNik(){
+    return this->nik;
 }
 
-void Koperasi::setSimpananWajib(int simpanan_wajib){
-    this->simpanan_wajib = simpanan_wajib;
+void Transaksi::setTanggal(int tanggal){
+    this->tanggal = tanggal;
 }
 
-int Koperasi::getSimpananSukarela(){
-    return this->simpanan_sukarela;
+int Transaksi::getTanggal(){
+    return this->tanggal;
 }
 
-void Koperasi::setSimpananSukarela(int simpanan_sukarela){
-    this->simpanan_sukarela = simpanan_sukarela;
+void Transaksi::setBulan(int bulan){
+    this->bulan = bulan;
 }
 
-int Koperasi::getPinjaman(){
-    return this->pinjaman;
+int Transaksi::getBulan(){
+    return this->bulan;
 }
 
-void Koperasi::setPinjaman(int pinjaman){
-    this->pinjaman = pinjaman;
+void Transaksi::setTahun(int tahun){
+    this->tahun = tahun;
 }
 
-int Koperasi::getAngsuran(){
-    return this->angsuran;
+int Transaksi::getTahun(){
+    return this->tahun;
 }
 
-void Koperasi::setAngsuran(int angsuran){
-    this->angsuran = angsuran;
+void Transaksi::setNominal(int nominal){
+    this->nominal = nominal;
 }
+
+int Transaksi::getNominal(){
+    return this->nominal;
+}
+

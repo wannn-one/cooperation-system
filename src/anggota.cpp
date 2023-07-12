@@ -1,14 +1,16 @@
+#include <iostream>
 #include "include/anggota.hpp"
 
-Anggota::Anggota(int id, std::string nama, std::string nik, std::string password, int tanggal, int bulan, int tahun, int saldo) : nama(nama), nik(nik), password(password), tanggal(tanggal), bulan(bulan), tahun(tahun), saldo(saldo){
+Anggota::Anggota(std::string nama, std::string nik, std::string password, int tanggal, int bulan, int tahun, int saldo, int saldo_dipinjam) : nama(nama), nik(nik), password(password), tanggal(tanggal), bulan(bulan), tahun(tahun), saldo(saldo), saldo_dipinjam(saldo_dipinjam){
     this->saldo = 50000;
+    this->saldo_dipinjam = 0;
 }
 
 // ID
 
-int Anggota::getId(){
-    return this->id;
-}
+// int Anggota::getId(){
+//     return this->id;
+// }
 
 // Nama
 
@@ -74,4 +76,14 @@ void Anggota::setSaldo(int saldo){
 
 int Anggota::getSaldo(){
     return this->saldo;
+}
+
+// saldo_dipinjam
+
+void Anggota::setSaldoDipinjam(int saldo_dipinjam){
+    this->saldo_dipinjam = saldo_dipinjam;
+}
+
+int Anggota::getSaldoDipinjam(){
+    return this->saldo_dipinjam;
 }

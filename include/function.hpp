@@ -1,5 +1,3 @@
-// get current year with library <ctime> and comparable with yyInput
-
 #include <ctime>
 #include <iostream>
 #include <fstream>
@@ -14,6 +12,7 @@ int currentYear = 1900 + localtime(&now)->tm_year;
 const int minYear = 1900;
 
 const char *pathDatabaseAnggota = "database/database_anggota.txt";
+const char *pathDatabaseTransaksi = "database/database_transaksi.txt";
 
 bool isLeap(int yyInput){
 	return (((yyInput % 4 == 0) && (yyInput % 100 != 0)) || (yyInput % 400 == 0));
@@ -44,12 +43,15 @@ bool dateValidation(int ddInput, int mmInput, int yyInput){
 }
 
 void saveAnggotaToDatabase(vector<Anggota>& anggotaVector) {
-    ofstream databaseFile(pathDatabaseAnggota);
-    int id = 1;
+    ofstream databaseFile(pathDatabaseAnggota);  // Menggunakan mode ios::app
+
     if (databaseFile.is_open()) {
+        // Menambahkan baris kosong sebagai pemisah antara anggota yang ada dengan anggota baru
+
+        int id = 1;
         for (int i = 0; i < anggotaVector.size(); i++) {
             databaseFile << id << " " 
-                         << anggotaVector[i].getNama() << " "
+                         << "\"" << anggotaVector[i].getNama() << "\"" << " "  // Menggunakan tanda kutip ("") untuk mengelompokkan nama
                          << anggotaVector[i].getNik() << " " 
                          << anggotaVector[i].getPassword() << " " 
                          << anggotaVector[i].getTanggal() << " " 
@@ -57,7 +59,7 @@ void saveAnggotaToDatabase(vector<Anggota>& anggotaVector) {
                          << anggotaVector[i].getTahun() << " " 
                          << anggotaVector[i].getSaldo() << endl;
             id++;
-    }
+        }
         databaseFile.close();
         cout << "Data anggota berhasil disimpan di database." << endl;
     } else {
@@ -65,15 +67,39 @@ void saveAnggotaToDatabase(vector<Anggota>& anggotaVector) {
     }
 }
 
+// // update bulan transaksi
+// void updateBulanTransaksi(vector<Anggota>& anggotaVector, string nik, int bulan_transaksi){
+//     // update berdasarkan nik
+//     for (int i = 0; i < anggotaVector.size(); i++){
+//         if (anggotaVector[i].getNik() == nik){
+//             anggotaVector[i].setBulanTransaksi(bulan_transaksi);
+//         }
+
+//         // masukkan ke database
+//         saveAnggotaToDatabase(anggotaVector);
+//     }
+// }
+
 void loadAnggotaFromDatabase(vector<Anggota>& anggotaVector) {
     ifstream databaseFile(pathDatabaseAnggota);
     if (databaseFile.is_open()) {
         anggotaVector.clear();
-        int id, tanggal, bulan, tahun, saldo;
+        int id, tanggal, bulan, tahun, saldo, bulan_transaksi, saldo_dipinjam;
         string nama, nik, password;
-        while (databaseFile >> id >> nama >> nik >> password >> tanggal >> bulan >> tahun >> saldo) {
-            Anggota anggota(id, nama, nik, password, tanggal, bulan, tahun, saldo);
-            anggotaVector.push_back(anggota);
+
+        // Variabel sementara untuk membaca spasi dalam nama anggota
+        string temp;
+
+        while (databaseFile >> id) {
+            // Menghapus spasi kosong setelah ID
+            databaseFile.get();
+
+            // Membaca nama anggota dengan spasi
+            getline(databaseFile, nama, '\"');
+            getline(databaseFile, nama, '\"');
+
+            databaseFile >> nik >> password >> tanggal >> bulan >> tahun >> saldo >> saldo_dipinjam;
+            anggotaVector.emplace_back(nama, nik, password, tanggal, bulan, tahun, saldo, saldo_dipinjam);
         }
         databaseFile.close();
         cout << "Data anggota berhasil diambil dari database." << endl;
@@ -82,7 +108,9 @@ void loadAnggotaFromDatabase(vector<Anggota>& anggotaVector) {
     }
 }
 
+
 void displayAnggota(vector<Anggota>& anggotaVector) {
+    loadAnggotaFromDatabase(anggotaVector);
     int id = 1;
     for (int i = 0; i < anggotaVector.size(); i++) {
         cout << "ID                         : " << id << endl;
@@ -94,4 +122,71 @@ void displayAnggota(vector<Anggota>& anggotaVector) {
         id++;
         cout << endl;
     }
+}
+
+void saveLaporanTransaksiToDatabase(vector<Transaksi>& transaksiVector) {
+    ofstream databaseFile(pathDatabaseTransaksi);  
+
+    if (databaseFile.is_open()) {
+        // Menambahkan baris kosong sebagai pemisah antara anggota yang ada dengan anggota baru
+        databaseFile << endl;
+
+        int id = 1;
+        for (int i = 0; i < transaksiVector.size(); i++) {
+            databaseFile << id << " " 
+                         << "\"" << transaksiVector[i].getJenisTransaksi() << "\"" << " "  // Menggunakan tanda kutip ("") untuk mengelompokkan nama
+                         << transaksiVector[i].getNik() << " " 
+                         << transaksiVector[i].getTanggal() << " " 
+                         << transaksiVector[i].getBulan() << " " 
+                         << transaksiVector[i].getTahun() << " " 
+                         << transaksiVector[i].getNominal() << endl;
+            id++;
+        }
+        databaseFile.close();
+        cout << "Data anggota berhasil disimpan di database." << endl;
+    } else {
+        cout << "Gagal membuka database_anggota.txt" << endl;
+    }
+}
+
+void loadLaporanTransaksiFromDatabase(vector<Transaksi>& transaksiVector) {
+    ifstream databaseFile(pathDatabaseTransaksi);
+    if (databaseFile.is_open()) {
+        transaksiVector.clear();
+        int id, tanggal, bulan, tahun, nominal;
+        string jenis_transaksi, nik;
+
+        // Variabel sementara untuk membaca spasi dalam nama anggota
+        string temp;
+
+        while (databaseFile >> id) {
+            // Menghapus spasi kosong setelah ID
+            databaseFile.get();
+
+            // Membaca nama anggota dengan spasi
+            getline(databaseFile, jenis_transaksi, '\"');
+            getline(databaseFile, jenis_transaksi, '\"');
+
+            databaseFile >> nik >> tanggal >> bulan >> tahun >> nominal;
+            transaksiVector.emplace_back(jenis_transaksi, nik, tanggal, bulan, tahun, nominal);
+        }
+        databaseFile.close();
+        cout << "Data transaksi berhasil diambil dari database." << endl;
+    } else {
+        cout << "Gagal membuka database_transaksi.txt" << endl;
+    }
+}
+
+void displayTransaksi(vector<Transaksi>& transaksiVector){
+    int id = 1;
+    for (int i = 0; i < transaksiVector.size(); i++){
+        cout << "ID                         : " << id << endl;
+        cout << "NIK                        : " << transaksiVector[i].getNik() << endl;;
+        cout << "Tanggal transaksi          : " << transaksiVector[i].getTanggal() << "/" << transaksiVector[i].getBulan() << "/" << transaksiVector[i].getTahun() << endl;
+        cout << "Jenis transaksi            : " << transaksiVector[i].getJenisTransaksi() << endl;
+        cout << "Nominal                    : " << transaksiVector[i].getNominal() << endl;
+        id++;
+        cout << endl;
+    }
+    
 }
